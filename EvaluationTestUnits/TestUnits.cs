@@ -52,15 +52,43 @@ public sealed class TestUnits
     }
 
     //Get Odd Number Method
-    // [TestMethod]
-    // [DataRow(10, 10, 1)]
-    // [DataRow(8, 2, 4)]
-    // [DataRow(30, 3, 10)]
-    // public void GetOddNumbers_WithOddNumber_ReturnsOddNumberList(int numberOne, int numberTwo, int expectedResult)
-    // {
-    //     var result = _mathOperations.Divide(numberOne, numberTwo);
-    //     Assert.AreEqual(expectedResult, result);
-    // }
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void GetOddNumbers_WithNegativeLimit_ThrowsArgumentException()
+    {
+        _mathOperations.GetOddNumbers(-1);
+    }
+
+    [TestMethod]
+    public void GetOddNumbers_WithLimitZero_ReturnsEmptyList()
+    {
+        var result = _mathOperations.GetOddNumbers(0);
+        Assert.AreEqual(0, result.Count());
+    }
+
+    [TestMethod]
+    public void GetOddNumbers_WithLimitFive_ReturnsOddNumbersUpToFive()
+    {
+        var result = _mathOperations.GetOddNumbers(5);
+        var expected = new List<int> { 1, 3, 5 };
+        CollectionAssert.AreEqual(expected, result.ToList());
+    }
+
+    [TestMethod]
+    public void GetOddNumbers_WithLimitTen_ReturnsOddNumbersUpToTen()
+    {
+        var result = _mathOperations.GetOddNumbers(10);
+        var expected = new List<int> { 1, 3, 5, 7, 9 };
+        CollectionAssert.AreEqual(expected, result.ToList());
+    }
+
+    [TestMethod]
+    public void GetOddNumbers_WithLimitOne_ReturnsOddNumberOne()
+    {
+        var result = _mathOperations.GetOddNumbers(1);
+        var expected = new List<int> { 1 };
+        CollectionAssert.AreEqual(expected, result.ToList());
+    }
 
     // Tests HTML Formater
 
