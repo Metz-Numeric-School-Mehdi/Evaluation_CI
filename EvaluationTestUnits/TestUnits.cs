@@ -5,9 +5,14 @@ namespace EvaluationTestUnits;
 [TestClass]
 public sealed class TestUnits
 {
+    private User _adminUser;
+    private User _regularUser;
+    private User _creatorUser;
+    
     private MathOperations _mathOperations;
     private HtmlFormatHelper _htmlFormatHelper;
     private CustomStack _stack;
+    private Reservation _reservation;
 
     [TestInitialize]
     public void Initialize()
@@ -15,6 +20,11 @@ public sealed class TestUnits
         _mathOperations = new MathOperations();
         _htmlFormatHelper = new HtmlFormatHelper();
         _stack = new CustomStack();
+        
+        _adminUser = new User { IsAdmin = true };
+        _regularUser = new User { IsAdmin = false };
+        _creatorUser = new User { IsAdmin = false };
+        _reservation = new Reservation(_creatorUser);
     }
 
     // Tests Math Operation
@@ -157,5 +167,27 @@ public sealed class TestUnits
     public void Pop_OnEmptyStack_ThrowsStackCantBeEmptyException()
     {
        Assert.ThrowsException<CustomStack.StackCantBeEmptyException>(() => _stack.Pop());
+    }
+    
+    // Tests Reservation
+    [TestMethod]
+    public void CanBeCancelledBy_Admin_ReturnsTrue()
+    {
+        var result = _reservation.CanBeCancelledBy(_adminUser);
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void CanBeCancelledBy_Creator_ReturnsTrue()
+    {
+        var result = _reservation.CanBeCancelledBy(_creatorUser);
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void CanBeCancelledBy_AnotherUser_ReturnsFalse()
+    {
+        var result = _reservation.CanBeCancelledBy(_regularUser);
+        Assert.IsFalse(result);
     }
 }
