@@ -6,14 +6,16 @@ namespace EvaluationTestUnits;
 public sealed class TestUnits
 {
     private MathOperations _mathOperations;
+    private HtmlFormatHelper _htmlFormatHelper;
 
     [TestInitialize]
     public void Initialize()
     {
         _mathOperations = new MathOperations();
+        _htmlFormatHelper = new HtmlFormatHelper();
     }
     
-    //Tests Math Operation
+    // Tests Math Operation
     
     // Add Method
     [TestMethod]
@@ -47,4 +49,33 @@ public sealed class TestUnits
     //     var result = _mathOperations.Divide(numberOne, numberTwo);
     //     Assert.AreEqual(expectedResult, result);
     // }
+    
+    // Tests HTML Formater
+    
+    // Get Bold Format Method 
+    [TestMethod]
+    public void GetBoldFormat_WithHTMLContent_ReturnsBoldFormat()
+    {
+        var result = _htmlFormatHelper.GetBoldFormat("Content");
+        Assert.AreEqual("<b>Content</b>", result);
+    }
+    
+    // Get Italic Format Method 
+    [TestMethod]
+    public void GetItalicFormat_WithHTMLContent_ReturnsItalicFormat()
+    {
+        var result = _htmlFormatHelper.GetItalicFormat("Content");
+        Assert.AreEqual("<i>Content</i>", result);
+    }
+    
+    // Get Formatted List Elements Method 
+    [TestMethod]
+    public void GetFormattedListElements_WithHTMLContents_ReturnsFormattedListElements()
+    {
+        var contents = new List<string> { "Content", "Test" };
+        var result = _htmlFormatHelper.GetFormattedListElements(contents);
+        var expected = "<ul><li>Content</li><li>Test</li></ul>";
+        
+        Assert.AreEqual(expected, result);
+    }
 }
